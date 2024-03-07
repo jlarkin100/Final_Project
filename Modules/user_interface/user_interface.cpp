@@ -3,37 +3,50 @@
 
 #include "display.h"
 #include "motor.h"
-#include "userinterface.h"
+#include "user_interface.h"
 
 #define DISPLAY_REFRESH_TIME_MS         1000
 #define SYSTEM_TIME_INCREMENT_MS        10
 
-void userInterfaceDisplayInit()
+static void userInterfaceDisplayInit()
 {
     displayInit();
      
     displayCharPositionWrite ( 0,0 );
-    displayStringWrite( "Speed:" );
+    displayStringWrite( "Spd:" );
 
     displayCharPositionWrite ( 0,1 );
-    displayStringWrite( "Distance:" );
+    displayStringWrite( "Dis:" );
+    
 }
-void userInterfaceDisplayUpdate()
+
+static void userInterfaceDisplayUpdate()
 {
     static int accumulatedDisplayTime = 0;
+    char speedString[2] = "";
+    char distanceString[4] = ""
     
-    if( true) {
+    if( accumulatedDisplayTime >=DISPLAY_REFRESH_TIME_MS ) {
+
         accumulatedDisplayTime = 0;
 
-        displayCharPositionWrite ( 7, 0);
-        displayStringWrite ("%.0f (speed)")
+        sprintf(speedString, "%.0f", getSpeed());
+        //12
+        displayCharPositionWrite (  4,0 );
+        displayStringWrite( speedString );
+        displayCharPositionWrite ( 7,0 );
+        displayStringWrite( "MPH" );
 
-    int delayType = getDelay();
-    displayCharPositionWrite(10,1);
-    displayStringWrite( "%.0f (distance traveled) " );
+       
+
+        sprintf(distanceString, "%.0f", getDistance());
         
+        displayCharPositionWrite ( 5,1 );
+        displayStringWrite( speedString );
+        displayCharPositionWrite ( 9,1 );
+        displayStringWrite( "MI." );
 
-    } 
+    }
     else {
         accumulatedDisplayTime =
             accumulatedDisplayTime + SYSTEM_TIME_INCREMENT_MS;        
